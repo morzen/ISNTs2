@@ -1,0 +1,14 @@
+balle<- rentrer hauteur de balle unite pixel
+rebond<- 10%
+nouvelle hauteur <- balle
+i<-0
+
+du moment que nouvelle hauteur>5
+               nouvelle hauteur = nouvelle hauteur - rebond 
+               afficher nouvelle hauteur 
+               rajouter a i 1 a chaque fois que nouvelle hauteur se repete 
+
+afficher("hauteur des rebond")
+afficher("ne rebondit plus")
+afficher (i)
+afficher("rebond")

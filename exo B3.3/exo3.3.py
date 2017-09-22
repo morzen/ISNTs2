@@ -1,12 +1,13 @@
 ﻿# saut de balles
 balle=(input("hauteur de la balles"))
-rebond=(10/100)
-newhight =(int(balle))
+ratio = 10/100
+newheight =(int(balle))
 i = 0
 
-while newhight>=5:
-    newhight=newhight-rebond
-    print(newhight)
+while newheight>=5:
+    x = newheight*ratio
+    newheight= newheight - x
+    print(newheight)
     i+=1
 
 

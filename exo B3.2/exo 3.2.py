@@ -8,19 +8,20 @@ imc=masse/(taille*taille)
 print(imc)
 
 if imc<18.5:
-    print("tu est trop maigre, il te reste  ")
-    diff=25*(taille*taille)
+    print("vous etes en souspoid, il vous reste  ")
+    diff=18.5*(taille*taille)
     diff=sqrt(diff)
     print(masse-diff)
     print (diff)
-    print( "a gagner pour avoir un corp de reve ")
+    print( "a gagner ")
 
 elif imc>=18.5 and imc<=25:
-    print("tu es un dieu vivant")
+    print("votre poid est raisonnnable")
 
 if imc>25:
-    print("tu est fatou il te reste ")
-    diff=18.5*(taille*taille)
+    print("vous etes en surpoid il vous reste ")
+    diff=25*(taille*taille)
     diff=sqrt(diff)
+    print(masse-diff)
     print(diff)
-    print(" a perdre pour etre beau gosse")
+    print(" a perdre ")

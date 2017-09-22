@@ -1,0 +1,25 @@
+masse<-poid demander ? 
+taille<- taille demander ?
+imc<- calcule imc -> masse/taille^2
+afficher le resultat
+
+si imc<18.5
+      afficher -> "tu es trop maigre il te reste "
+      faire faire calcul imc -> 18.5*(taille^2)
+      faire la racine carre de imc
+      faire difference masse-imc
+      afficher difference 
+      afficher  "a gagne"
+
+
+sinon si imc>= a 18.5 et imc<= a 25
+            print(vous etes dans l'imc)
+
+si imc>25
+      afficher -> "tu es trop gros il te reste "
+      faire faire calcul imc -> 25*(taille^2)
+      faire la racine carre de imc
+      faire difference masse-imc
+      afficher difference 
+      afficher  "a perdre"
+   
