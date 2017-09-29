@@ -5,8 +5,10 @@ var=False
 
 while var==False:
     if lower50 %5==0 and lower50 %2==0: var==True
-
-if var==True:
-    print("BINGO!")
+    print("bingo")
 
 
+
+
+else:
+    print("nope")
