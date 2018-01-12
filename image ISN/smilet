@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+	<title>yolo</title>
+	<circle cx="200" cy="200" r="199" fill="yellow" stroke="black" stroke-width="2"/>
+	<ellipse cx="125" cy="150" rx="25" ry="50"/>
+	<circle cx="125" cy="150" r="10" fill="red"/>
+	<ellipse cx="275" cy="150" rx="25" ry="50"/>
+	<circle cx="275" cy="150" r="10" fill="red"/>
+	<!--
+	<path d="M 75 250 q 125 200 250 0" stroke="black" stroke-width="5" fill="none" />
+	-->
+	<path d="M 70,225 A 1 1 0 0 0 330,225" stroke="black" stroke-width="15" fill="none" />
+<svg/>
