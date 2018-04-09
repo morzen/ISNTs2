@@ -35,7 +35,7 @@ class Client:
 
     def sendMsg(self):
         while True:
-            self.sock.send(bytes(input("you : "),'utf-8'))
+            self.sock.send(bytes(pseudo + " :" + input(),'utf-8'))
 
     def __init__(self, address):
         self.sock.connect((address,10000))
@@ -48,7 +48,7 @@ class Client:
             data = self.sock.recv(1024)
             if not data:
                 break
-            print(str(data, 'utf-8'))
+            print( str(data, 'utf-8'))
 
 print("\n _-_-_-_-_ Welcome to S_Chat _-_-_-_-_ \n")
 #here we will do the user checking when the databse will be up
@@ -56,6 +56,7 @@ print("---To start the serveur type hit enter --- \n---To start the client type 
 typeVar = input()
 if(len(typeVar) >1 ):
     print("client starting on "+typeVar)
+    pseudo = input("enter pseudo : ")
     client = Client(typeVar)
 else:
     print("serveur starting")
