@@ -29,8 +29,8 @@ while not quitting:
             print(clients)
         for client in clients:
             print(client)
-
-            s.sendto(data,client)
+            if(client != addr):
+                s.sendto(data,client)
 
     except:
         pass

@@ -34,19 +34,29 @@ s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.connect(server)
 
 
-rT = threading.Thread(target=receving, args=("RecvThread",s))
-rT.start()
+#rT = threading.Thread(target=receving, args=("RecvThread",s))
+#rT.start()
 
 alias = input("Name: ")
-while True:
-
-    message = input(alias + "-> ")
-    if message !='':
-        s.send((alias + ": " + message).encode('utf-8'))
-
-    time.sleep(0.2)
+try:
     data, addr = s.recvfrom(1026)
-    print(data)
+    if(data != (alias + ": " + message).encode('utf-8') ):
+        print(data)
+except:
+
+    while True:
+        message = input(alias + "-> ")
+        if message !='':
+
+            s.send((alias + ": " + message).encode('utf-8'))
+
+            time.sleep(0.2)
+        try:
+            data, addr = s.recvfrom(1026)
+            if(data != (alias + ": " + message).encode('utf-8') ):
+                print(data)
+        except:
+            pass
     #message = input(alias + "-> ")
 
 
