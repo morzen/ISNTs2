@@ -2,6 +2,10 @@
 import socket
 import threading
 import sys
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
+from Crypto import Random
+import M2Crypto
 
 
 class Server:
@@ -13,13 +17,18 @@ class Server:
         self.sock.bind(('0.0.0.0', 10000))
         self.sock.listen(1)
 
-    def handler(self, c, a):
+    def handler(self, c, a, key):
         while True:
             data = c.recv(1024)
+
+            decryptor = PKCS1_OAEP.new(key)
+            decrypted = decryptor.decrypt(data)
+            data = decrypted
             for connections in self.connections:
                 print(a)
                 print(data)
                 if connections != c:
+
                     connections.send(data)
             if not data:
                 print(str(a[0]) + ':' + str(a[1]), "disconnected")
@@ -30,7 +39,17 @@ class Server:
     def run(self):
         while True:
             c, a = self.sock.accept()
-            cThread = threading.Thread(target=self.handler, args=(c, a))
+            key = c.recv(1024)
+            print(key)
+
+            # generate pub/priv key and sent pub key to client
+            random_generator = Random.new().read
+            private_key = RSA.generate(1024, random_generator)
+            public_key = private_key.publickey()
+            c.send(public_key.exportKey())
+            # start threads
+            cThread = threading.Thread(
+                target=self.handler, args=(c, a, private_key))
             cThread.daemon = True
             cThread.start()
             self.connections.append(c)
