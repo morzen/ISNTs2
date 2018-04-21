@@ -5,7 +5,7 @@ import sys
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
 from Crypto import Random
-import M2Crypto
+#import M2Crypto
 
 
 class Client:

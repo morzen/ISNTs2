@@ -40,5 +40,5 @@ typeVar = input()
 if(len(typeVar) > 1):
     print("client starting on " + typeVar)
     pseudo = input("enter pseudo : ")
-    print("Generating a 1024 bit private/public key pair for " + pseudo + " ...")
+
     client = Client(typeVar)

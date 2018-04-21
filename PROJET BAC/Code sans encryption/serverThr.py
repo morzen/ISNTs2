@@ -19,7 +19,9 @@ class Server:
             for connections in self.connections:
                 print(a)
                 print(data)
-                connections.send(data)
+                if connections != c:
+                    connections.send(data)
+
             if not data:
                 print(str(a[0]) + ':' + str(a[1]), "disconnected")
                 self.connections.remove(c)
