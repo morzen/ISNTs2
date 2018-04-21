@@ -14,6 +14,7 @@ class Client:
 
     def sendMsg(self, key):
         while True:
+            # print(key)
             encryptor = PKCS1_OAEP.new(key)
             encrypted = encryptor.encrypt(
                 bytes(pseudo + " :" + input(), 'utf-8'))
@@ -47,7 +48,12 @@ class Client:
             data = self.sock.recv(1024)
             if not data:
                 break
-            print(str(data, 'utf-8'))
+            # decode msg
+            decryptor = PKCS1_OAEP.new(private_key)
+            decrypted = decryptor.decrypt(data)
+            data = decrypted
+            data = data.decode('utf-8')
+            print(data)
 
 
 print("\n _-_-_-_-_ Welcome to S_Chat _-_-_-_-_ \n")

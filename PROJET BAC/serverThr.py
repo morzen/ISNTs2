@@ -20,29 +20,35 @@ class Server:
     def handler(self, c, a, key):
         while True:
             data = c.recv(1024)
-
+            print(data)
+            # client msg decrypted with server private key
             decryptor = PKCS1_OAEP.new(key)
             decrypted = decryptor.decrypt(data)
             data = decrypted
+            data = data.decode('utf-8')
             for connections in self.connections:
                 print(a)
-                print(data)
-                if connections != c:
-
-                    connections.send(data)
+                if connections[0] != c:
+                    # data encryption for sending message to other client using other client pubKey
+                    pubKey = connections[1]
+                    encryptor = PKCS1_OAEP.new(pubKey)
+                    encrypted = encryptor.encrypt(bytes("" + data, 'utf-8'))
+                    connections[0].send(encrypted)
             if not data:
                 print(str(a[0]) + ':' + str(a[1]), "disconnected")
-                self.connections.remove(c)
+                self.connections.remove((c, key))
                 c.close()
                 break
 
     def run(self):
         while True:
+            # receive client pub key
             c, a = self.sock.accept()
             key = c.recv(1024)
+            key = RSA.importKey(key)
             print(key)
 
-            # generate pub/priv key and sent pub key to client
+            # generate server pub/priv key and sent pub key to client
             random_generator = Random.new().read
             private_key = RSA.generate(1024, random_generator)
             public_key = private_key.publickey()
@@ -52,7 +58,8 @@ class Server:
                 target=self.handler, args=(c, a, private_key))
             cThread.daemon = True
             cThread.start()
-            self.connections.append(c)
+            # add client con/pubKey info
+            self.connections.append((c, key))
             print(str(a[0]) + ':' + str(a[1]), "connected")
 
 
