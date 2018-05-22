@@ -3,24 +3,51 @@ import socket
 import threading
 import sys
 import os
+import random
+import json
 
 
 class Client:
 
     print("done -- app started")
 
+    key = ()
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-    def cle_privee(p, q, e):
+    def offsetFunction(self, inp):
+        l = len(inp)
+        offset = int(random.randint(1, 20))
+        cypher = ""
+        for i in range(l):
+            n = ord(inp[i])
+            cypher += chr(n + offset)
+        return cypher
 
+    # Euclide etendu permmettant de trouver le pgcd mais aussi les coefficient pour trouver les variables qui formeront la somme du pgcd initlal
+    def euclide_etendu(self, a, b):
+
+        x = 1
+        y = 0
+        xx = 0
+        yy = 1
+        while b != 0:
+            q = a // b
+            a, b = b, a % b
+            xx, x = x - q * xx, xx
+            yy, y = y - q * yy, yy
+
+        # Cet algorithme renvoie d’abord le pgcd, puis les coefficients u, v tels que au + bv = pgcd(a, b)
+        return(a, x, y)
+
+    def private_key(self, p, q, e):
         n = p * q  # a modifier
         phi = (p - 1) * (q - 1)  # a modifier
         # Pgcd et coeff de Bézout ( voir theoreme )
-        c, d, dd = euclide_etendu(e, phi)
+        c, d, dd = self.euclide_etendu(e, phi)
         return(d % phi)  # Retourne la clé privée
 
-    def crypto():
+    def crypto(self):
 
         # Calcul clé publique pour ordi 1:
         # L'utilisateur entre p
@@ -35,33 +62,46 @@ class Client:
         print("| Clée Publique :", n, e)  # Affiche la clé publique
 
         # Calcul clé privée pour ordi 2:
-        k = cle_privee(p, q, e)
+        k = self.private_key(p, q, e)
         print("| Clé privée :", k, e)
         return (n, k)
 
-    def chiffrement_dechiffrement(m, e, n):
+    def chiffrement_dechiffrement(self, m, e, n):
         return((m**e) % n)
 
     def sendMsg(self):
 
         while True:
+            msg = []
             inp = input()
-            # get key from self.key and select private or public key from tuple
-            # crypt msg with function from file Cryptage.py (carefull c pa mon code)
-            # send key with message
-            self.sock.send(bytes(pseudo + " :" + input(), 'utf-8'))
+            l = len(inp)
+            # offset msg with offsetFunction (carefull c pa mon code)
+            offsetCypher = self.offsetFunction(inp)
+
+            # get key public key from self.key  from tuple
+            pubKey = self.key[0]
+            n = ""
+            # for i in range(l):
+            # crypt msg with chiffrement_dechiffrement (pas mon code nn plus)
+            #    msg.append(self.chiffrement_dechiffrement(
+            #        ord(offsetCypher[i]), pubKeyn, n))
+
+            # send key with message in a tuple using json
+            self.sock.send(
+                bytes(pseudo + " :" + json.dumps((offsetCypher, self.key)), 'utf-8'))
 
     def __init__(self, address):
         self.sock.connect((address, 10000))
 
+        self.key = self.crypto()  # must be tuple (pubKey, privKey)
         iThread = threading.Thread(target=self.sendMsg)
         iThread.daemon = True
         iThread.start()
 
         while True:
             data = self.sock.recv(1024)
-            # get sender key from msg
-            # decrypt msg with function from decryptage.py (carefull c pa mon code)
+            # get sender key tuple from msg by using json.loads on data (you ll have [msg,[pubKey,privKey]] ) )
+            # decrypt msg with function from decryptage.py and chiffrement_dechiffrement (carefull c pa mon code)
             if not data:
                 break
             print(str(data, 'utf-8'))
@@ -74,5 +114,5 @@ typeVar = input()
 if(len(typeVar) > 1):
     print("client starting on " + typeVar)
     pseudo = input("enter pseudo : ")
-    key = crypto()  # must be tuple (pubKey, privKey)
+
     client = Client(typeVar)

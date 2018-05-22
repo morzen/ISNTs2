@@ -19,7 +19,7 @@ class Server:
             for connections in self.connections:
                 print(a)
                 print(data)
-                if connections[0] != c:
+                if connections != c:
                     connections.send(data)
 
             if not data:
