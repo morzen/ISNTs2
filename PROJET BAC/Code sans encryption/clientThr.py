@@ -17,7 +17,8 @@ class Client:
     def sendMsg(self):
 
         while True:
-            self.sock.send(bytes(pseudo + " :" + input(), 'utf-8'))
+            inp = input()
+            self.sock.send(bytes(pseudo + " :" + inp, 'utf-8'))
 
     def __init__(self, address):
         self.sock.connect((address, 10000))
