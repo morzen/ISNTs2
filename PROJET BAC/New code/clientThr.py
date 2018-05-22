@@ -37,7 +37,7 @@ class Client:
         # Calcul clé privée pour ordi 2:
         k = cle_privee(p, q, e)
         print("| Clé privée :", k, e)
-        return (k, n)
+        return (n, k)
 
     def chiffrement_dechiffrement(m, e, n):
         return((m**e) % n)
@@ -46,8 +46,8 @@ class Client:
 
         while True:
             inp = input()
-            # get key from self.key
-            # crypt msg
+            # get key from self.key and select private or public key from tuple
+            # crypt msg with function from file Cryptage.py (carefull c pa mon code)
             # send key with message
             self.sock.send(bytes(pseudo + " :" + input(), 'utf-8'))
 
@@ -61,7 +61,7 @@ class Client:
         while True:
             data = self.sock.recv(1024)
             # get sender key from msg
-            # decrypt msg
+            # decrypt msg with function from decryptage.py (carefull c pa mon code)
             if not data:
                 break
             print(str(data, 'utf-8'))
@@ -74,5 +74,5 @@ typeVar = input()
 if(len(typeVar) > 1):
     print("client starting on " + typeVar)
     pseudo = input("enter pseudo : ")
-    key = crypto()
+    key = crypto()  # must be tuple (pubKey, privKey)
     client = Client(typeVar)
