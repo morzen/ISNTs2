@@ -22,7 +22,15 @@ class Client:
         for i in range(l):
             n = ord(inp[i])
             cypher += chr(n + offset)
-        return cypher
+        return (cypher, offset)
+
+    def solveOffset(self, msg, offsetValue):
+        msgClear = ""
+        l = len(msg)
+        for k in range(l):
+            n = ord(msg[k])
+            msgClear = msgClear + chr(n - offsetValue)
+        return msgClear
 
     # Euclide etendu permmettant de trouver le pgcd mais aussi les coefficient pour trouver les variables qui formeront la somme du pgcd initlal
     def euclide_etendu(self, a, b):
@@ -76,7 +84,7 @@ class Client:
             inp = input()
             l = len(inp)
             # offset msg with offsetFunction (carefull c pa mon code)
-            offsetCypher = self.offsetFunction(inp)
+            (offsetCypher, offsetValue) = self.offsetFunction(pseudo + " :" + inp)
 
             # get key public key from self.key  from tuple
             pubKey = self.key[0]
@@ -88,7 +96,7 @@ class Client:
 
             # send key with message in a tuple using json
             self.sock.send(
-                bytes(pseudo + " :" + json.dumps((offsetCypher, self.key)), 'utf-8'))
+                bytes(json.dumps((offsetCypher, offsetValue, self.key)), 'utf-8'))
 
     def __init__(self, address):
         self.sock.connect((address, 10000))
@@ -102,9 +110,15 @@ class Client:
             data = self.sock.recv(1024)
             # get sender key tuple from msg by using json.loads on data (you ll have [msg,[pubKey,privKey]] ) )
             # decrypt msg with function from decryptage.py and chiffrement_dechiffrement (carefull c pa mon code)
+            data = json.loads(data)
+            offsetCypher = data[0]
+            offsetValue = data[1]
+            keys = data[2]
+            msg = self.solveOffset(offsetCypher, offsetValue)
+            print(msg)
             if not data:
                 break
-            print(str(data, 'utf-8'))
+            #print(str(msg, 'utf-8'))
 
 
 print("\n _-_-_-_-_ Welcome to S_Chat _-_-_-_-_ \n")
