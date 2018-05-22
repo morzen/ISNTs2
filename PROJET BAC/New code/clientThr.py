@@ -89,8 +89,8 @@ class Client:
             # get key public key from self.key  from tuple
             pubKey = self.key[0]
             n = ""
-            # for i in range(l):
             # crypt msg with chiffrement_dechiffrement (pas mon code nn plus)
+            # for i in range(l):
             #    msg.append(self.chiffrement_dechiffrement(
             #        ord(offsetCypher[i]), pubKeyn, n))
 
@@ -108,16 +108,27 @@ class Client:
 
         while True:
             data = self.sock.recv(1024)
+            if not data:
+                break
             # get sender key tuple from msg by using json.loads on data (you ll have [msg,[pubKey,privKey]] ) )
             # decrypt msg with function from decryptage.py and chiffrement_dechiffrement (carefull c pa mon code)
             data = json.loads(data)
             offsetCypher = data[0]
             offsetValue = data[1]
             keys = data[2]
-            msg = self.solveOffset(offsetCypher, offsetValue)
+
+            msg = offsetCypher
+
+            l = len(msg)
+            pubKey = key[0]
+            n = ""
+            # decrypt msg with chiffrement_dechiffrement (pas mon code )
+            # for i in range(l):
+            #    msg.append(self.chiffrement_dechiffrement(
+            #        ord(msg[i]), pubKeyn, n))
+
+            msg = self.solveOffset(msg, offsetValue)
             print(msg)
-            if not data:
-                break
             #print(str(msg, 'utf-8'))
 
 
