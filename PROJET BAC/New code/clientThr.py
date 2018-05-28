@@ -112,7 +112,7 @@ class Client:
                 break
             # get sender key tuple from msg by using json.loads on data (you ll have [msg,[pubKey,privKey]] ) )
             # decrypt msg with function from decryptage.py and chiffrement_dechiffrement (carefull c pa mon code)
-            data = json.loads(data)
+            data = json.loads(data.decode("utf-8"))
             offsetCypher = data[0]
             offsetValue = data[1]
             keys = data[2]
