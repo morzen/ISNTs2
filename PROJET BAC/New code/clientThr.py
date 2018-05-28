@@ -120,7 +120,7 @@ class Client:
             msg = offsetCypher
 
             l = len(msg)
-            pubKey = key[0]
+            #pubKey = key[0]
             n = ""
             # decrypt msg with chiffrement_dechiffrement (pas mon code )
             # for i in range(l):
