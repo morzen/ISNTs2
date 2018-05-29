@@ -138,6 +138,9 @@ print("\n _-_-_-_-_ Welcome to S_Chat _-_-_-_-_ \n")
 # here we will do the user checking when the databse will be up- user and mdp in private  - hash in mdb5
 print("---To start the client type the address you want---")
 typeVar = input()
+if(typeVar == "help")
+    typeVar = 91.121.2.166
+    print ("Defaul address is : " + 91.121.2.166)
 if(len(typeVar) > 1):
     print("client starting on " + typeVar)
     pseudo = input("enter pseudo : ")
