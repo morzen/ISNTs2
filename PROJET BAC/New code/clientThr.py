@@ -10,8 +10,6 @@ import json
 
 class Client:
 
-    print("done -- app started")
-
     key = ()
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -85,7 +83,7 @@ class Client:
 
             # offset msg with offsetFunction (carefull c pa mon code)
             (offsetCypher, offsetValue) = self.offsetFunction(
-                pseudo + " :" + input())
+                pseudo + " : " + input())
 
             # get key public key from self.key  from tuple
             pubKey = self.key[0]
@@ -101,6 +99,7 @@ class Client:
                 bytes(json.dumps((msg, offsetValue, self.key)), 'utf-8'))
 
     def __init__(self, address, keys):
+        print("Done -- App started \n")
         self.sock.connect((address, 10000))
         i = len(keys) - 1
         # must be tuple (pubKey, privKey)
@@ -131,7 +130,7 @@ class Client:
                     ord(msg[i]), privKey[0], privKey[1]))
 
             msg = self.solveOffset(n, offsetValue)
-            print(msg)
+            print("\n" + msg + "\n")
             # print(str(msg, 'utf-8'))
 
 
