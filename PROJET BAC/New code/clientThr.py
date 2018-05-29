@@ -5,6 +5,7 @@ import sys
 import os
 import random
 import json
+# 91.121.2.166
 
 
 class Client:
@@ -75,33 +76,35 @@ class Client:
         return (n, k)
 
     def chiffrement_dechiffrement(self, m, e, n):
-        return((m**e) % n)
+        return chr((m**e) % n)
 
     def sendMsg(self):
 
         while True:
             msg = []
-            inp = input()
-            l = len(inp)
+
             # offset msg with offsetFunction (carefull c pa mon code)
-            (offsetCypher, offsetValue) = self.offsetFunction(pseudo + " :" + inp)
+            (offsetCypher, offsetValue) = self.offsetFunction(
+                pseudo + " :" + input())
 
             # get key public key from self.key  from tuple
             pubKey = self.key[0]
             n = ""
+            l = len(offsetCypher)
             # crypt msg with chiffrement_dechiffrement (pas mon code nn plus)
-            # for i in range(l):
-            #    msg.append(self.chiffrement_dechiffrement(
-            #        ord(offsetCypher[i]), pubKeyn, n))
+            for i in range(l):
+                msg.append(self.chiffrement_dechiffrement(
+                    ord(offsetCypher[i]), pubKey[0], pubKey[1]))
 
             # send key with message in a tuple using json
             self.sock.send(
-                bytes(json.dumps((offsetCypher, offsetValue, self.key)), 'utf-8'))
+                bytes(json.dumps((msg, offsetValue, self.key)), 'utf-8'))
 
-    def __init__(self, address):
+    def __init__(self, address, keys):
         self.sock.connect((address, 10000))
-
-        self.key = self.crypto()  # must be tuple (pubKey, privKey)
+        i = len(keys) - 1
+        # must be tuple (pubKey, privKey)
+        self.key = keys[random.randint(0, i)]
         iThread = threading.Thread(target=self.sendMsg)
         iThread.daemon = True
         iThread.start()
@@ -115,21 +118,21 @@ class Client:
             data = json.loads(data.decode("utf-8"))
             offsetCypher = data[0]
             offsetValue = data[1]
-            keys = data[2]
+            _key = data[2]
 
             msg = offsetCypher
 
             l = len(msg)
-            #pubKey = key[0]
-            n = ""
+            privKey = _key[1]
+            n = []
             # decrypt msg with chiffrement_dechiffrement (pas mon code )
-            # for i in range(l):
-            #    msg.append(self.chiffrement_dechiffrement(
-            #        ord(msg[i]), pubKeyn, n))
+            for i in range(l):
+                n.append(self.chiffrement_dechiffrement(
+                    ord(msg[i]), privKey[0], privKey[1]))
 
-            msg = self.solveOffset(msg, offsetValue)
+            msg = self.solveOffset(n, offsetValue)
             print(msg)
-            #print(str(msg, 'utf-8'))
+            # print(str(msg, 'utf-8'))
 
 
 print("\n _-_-_-_-_ Welcome to S_Chat _-_-_-_-_ \n")
@@ -139,5 +142,6 @@ typeVar = input()
 if(len(typeVar) > 1):
     print("client starting on " + typeVar)
     pseudo = input("enter pseudo : ")
-
-    client = Client(typeVar)
+    keys = [[(985, 234937), (44845, 234937)], [(985, 137903), (49129, 137903)], [
+        (503, 99301), (43127, 99301)], [(743, 30299), (28487, 30299)], [(523, 243307), (218227, 243307)], [(567, 175093), (117683, 175093)], [(867, 299461), (223603, 299461)], [(91, 28213), (3667, 28213)], [(941, 371989), (351749, 371989)], [(511, 75841), (8975, 75841)]]
+    client = Client(typeVar, keys)
