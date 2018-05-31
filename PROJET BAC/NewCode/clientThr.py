@@ -100,7 +100,7 @@ class Client:
 
     def __init__(self, address, keys):
         print("Done -- App started \n")
-        self.sock.connect((address, 10000))
+        self.sock.connect((address, 10001))
         i = len(keys) - 1
         # must be tuple (pubKey, privKey)
         self.key = keys[random.randint(0, i)]
